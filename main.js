@@ -8,7 +8,7 @@ const readline = require("readline").createInterface({
 const hat = "^";
 const hole = "O";
 const fieldCharacter = "░";
-const pathCharacter = "}
+const pathCharacter = "*"
 ;
 
 class Field {
