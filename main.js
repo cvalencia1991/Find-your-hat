@@ -1,9 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true });
 
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
 
 const hat = "^";
 const hole = "O";
@@ -30,7 +26,6 @@ class Field {
   playGame() {
     this.print();
     this.direction();
-
   }
 
   move(direction) {
@@ -48,20 +43,41 @@ class Field {
         this._locationX += 1;
         break;
       default:
-        console.log("Enter U, D, L or R.");
         this.direction();
         break;
     }
   }
 
-  direction() {
-    readline.question("Which way? ", (direction) => {
-      console.log(`You chose ${direction}`);
-      this.move(direction);
+  isInBounds() {
+    return (
+      this._locationY >= 0 &&
+      this._locationX >= 0 &&
+      this._locationY < this._battlefield.length &&
+      this._locationX < this._battlefield[0].length
+    );
+  }
 
-      myField.print();
-      readline.close();
-    });
+  isHole() {
+    return this._battlefield[this._locationY][this._locationX] === hole;
+  }
+
+  isHat() {
+    return this._battlefield[this._locationY][this._locationX] === hat;
+  }
+
+  direction() {
+    const answer = prompt("Which way? ").toUpperCase();
+    this.move(answer);
+    if (!this.isInBounds()) {
+      console.log("Out of bounds instruction!");
+    } else if (this.isHole()) {
+      console.log("Sorry, you fell down a hole!");
+    } else if (this.isHat()) {
+      console.log("Congrats, you found your hat!");
+    } else {
+      this._battlefield[this._locationY][this._locationX] = pathCharacter;
+      this.playGame();
+    }
   }
 }
 
