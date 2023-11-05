@@ -1,4 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true });
+const term = require( 'terminal-kit' ).terminal ;
 
 
 const hat = "^";
@@ -66,7 +67,8 @@ class Field {
   }
 
   direction() {
-    const answer = prompt("Which way? ").toUpperCase();
+    const question = term.bold.underline.red("Which way? L = Left, R = Right, U = Up, D = Down.")
+    const answer = prompt(question).toUpperCase();
     this.move(answer);
     if (!this.isInBounds()) {
       console.log("Out of bounds instruction!");
